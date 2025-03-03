@@ -23,7 +23,7 @@ jobs:
         run: |
           BUILD="$(date +"%Y%m%d.%H%M%S")"
           echo "$BUILD" > .github/dependencies/.latest-build
-          echo "::set-output name=build_number::$BUILD"
+          echo "build_number=$BUILD" >> $GITHUB_ENV
           echo "[LOG] Buildnumber: $BUILD"
 
       - name: Commit latest release version
@@ -31,7 +31,7 @@ jobs:
           git config --global user.name 'buanet'
           git config --global user.email 'info@buanet.de'
           git commit -am "new build"
-          git push
+          git push origin HEAD:main
 
   build-latest-armv7:
     name: Build latest armv7 image
