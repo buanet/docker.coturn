@@ -229,7 +229,7 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            buanet/cotrun:${{ env.version }}-build.${{ env.build }}-amd64,
+            buanet/coturn:${{ env.version }}-build.${{ env.build }}-amd64,
             ghcr.io/buanet/coturn:${{ env.version }}-build.${{ env.build }}-amd64,
 
   create-multiarch-image:
