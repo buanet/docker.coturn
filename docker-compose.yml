@@ -2,9 +2,7 @@ stun-turn-server:
     image: buanet/coturn:latest
     container_name: stun-turn-server
     restart: always
-    ports:
-      - "3478:3478/udp"
-      - "3478:3478/tcp"
+    network_mode: host
     environment:
       - LISTENING_IP_ADDRESS=0.0.0.0
       - EXTERNAL_IP_ADDDRESS=xxx.xxx.xxx.xxx

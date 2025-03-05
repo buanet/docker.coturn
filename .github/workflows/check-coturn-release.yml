@@ -1,0 +1,43 @@
+name: Check Coturn Release
+
+on:
+  schedule:
+    - cron: '42 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  check-coturn-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4.1.7
+        with:
+          repository: 'buanet/docker.coturn'
+          token: ${{ secrets.ACTIONS_PAT }}
+
+      - name: Fetch coturn release version
+        run: |
+          latest_release=$(curl -s https://api.github.com/repos/coturn/coturn/releases | jq -r '.[] | select(.tag_name | contains("docker")) | .tag_name' | head -n 1)
+          if [ -z "$latest_release" ]; then
+            echo "No release with 'docker' in the tag found."
+            exit 1
+          fi
+          clean_release=$(echo $latest_release | sed 's/docker\///')
+          echo "Latest release with 'docker' in the tag: $clean_release"
+          echo $clean_release > .github/dependencies/.latest-coturn-release
+
+      - name: Check for modified files
+        id: git-check
+        run: echo "modified=$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")" >> $GITHUB_OUTPUT
+
+      - name: Commit latest release version
+        if: steps.git-check.outputs.modified == 'true'
+        run: |
+          git config --global user.name 'buanet'
+          git config --global user.email 'info@buanet.de'
+          git commit -am "new coturn release"
+          git push
+
+      - name: Logging result
+        run: |
+          echo "coturn release version changed = ${{ steps.git-check.outputs.modified }}"
