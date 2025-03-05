@@ -13,33 +13,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 This project uses "Coturn TURN server" (https://github.com/coturn/coturn) as base image which is based on
 "TURN Server - RFC5766 TURN Server Implementation" by Citrix Systems
 
-/*
- * TURN Server - RFC5766 TURN Server implementation
- * Copyright (C) 2011, 2012, 2013 Citrix Systems
- *
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the name of the project nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE PROJECT AND CONTRIBUTORS ``AS IS'' AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE PROJECT OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
- * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- */
+/\*</br>
+ \* TURN Server - RFC5766 TURN Server implementation</br>
+ \* Copyright (C) 2011, 2012, 2013 Citrix Systems</br>
+ \*</br>
+ \* All rights reserved.</br>
+ \*</br>
+ \* Redistribution and use in source and binary forms, with or without</br>
+ \* modification, are permitted provided that the following conditions</br>
+ \* are met:</br>
+ \* 1. Redistributions of source code must retain the above copyright</br>
+ \*    notice, this list of conditions and the following disclaimer.</br>
+ \* 2. Redistributions in binary form must reproduce the above copyright</br>
+ \*    notice, this list of conditions and the following disclaimer in the</br>
+ \*    documentation and/or other materials provided with the distribution.</br>
+ \* 3. Neither the name of the project nor the names of its contributors</br>
+ \*    may be used to endorse or promote products derived from this software</br>
+ \*    without specific prior written permission.</br>
+ \*</br>
+ \* THIS SOFTWARE IS PROVIDED BY THE PROJECT AND CONTRIBUTORS ``AS IS'' AND</br>
+ \* ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE</br>
+ \* IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE</br>
+ \* ARE DISCLAIMED.  IN NO EVENT SHALL THE PROJECT OR CONTRIBUTORS BE LIABLE</br>
+ \* FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL</br>
+ \* DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS</br>
+ \* OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)</br>
+ \* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT</br>
+ \* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY</br>
+ \* OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF</br>
+ \* SUCH DAMAGE.</br>
+ \*/</br>
