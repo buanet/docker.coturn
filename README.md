@@ -1,4 +1,4 @@
-# Easy Coturn (STUN/TURN) Docker Implementation
+# Simple Coturn (STUN/TURN) Docker Implementation
 
 [![Release](https://img.shields.io/github/v/release/buanet/docker.coturn?style=flat)](https://github.com/buanet/docker.coturn/releases)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/buanet/docker.coturn/build-latest-image.yml?branch=main)](https://github.com/buanet/docker.coturn/actions/workflows/build-latest-image.yml)<br>
@@ -7,14 +7,12 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/buanet/coturn?style=flat)](https://hub.docker.com/repository/docker/buanet/coturn)
 [![Docker Stars](https://img.shields.io/docker/stars/buanet/coturn?style=flat)](https://hub.docker.com/repository/docker/buanet/coturn)<br>
 [![Source](https://img.shields.io/badge/source-github-blue?style=flat)](https://github.com/buanet/docker.coturn)
-[![GitHub forks](https://img.shields.io/github/forks/buanet/docker.coturn)](https://github.com/buanet/docker.coturn/network)
-[![GitHub stars](https://img.shields.io/github/stars/buanet/docker.coturn)](https://github.com/buanet/docker.coturn/stargazers)
-[![License](https://img.shields.io/github/license/buanet/docker.coturn?style=flat)](https://github.com/buanet/docker.coturn/blob/master/LICENSE.md)
+[![Static Badge](https://img.shields.io/badge/license-MIT-green)](https://github.com/buanet/docker.coturn/blob/master/LICENSE.md)
 [![Donate](https://img.shields.io/badge/donate-paypal-blue?style=flat)](https://paypal.me/buanet)
 
 This project uses "Coturn TURN server" (https://github.com/coturn/coturn) as base image and adds some useful implementations. 
 
-## What is a STUN/TURN server?
+## :question: What is a STUN/TURN server?
 
 A STUN (Session Traversal Utilities for NAT) server helps determine the public IP address and NAT type of a client that is behind a NAT (Network Address Translation). This is particularly useful for applications that require peer-to-peer communication, such as VoIP (Voice over IP) or video conferencing.
 
@@ -22,15 +20,15 @@ A TURN (Traversal Using Relays around NAT) server goes a step further by allowin
 
 This project uses the [Coturn TURN server](https://github.com/coturn/coturn) to provide a simple and effective implementation of STUN/TURN servers in Docker.
 
-## Prerequisites
+## :clipboard: Prerequisites
 
 * A Docker enabled server - Get started with Docker at [Docker's official website](https://www.docker.com/get-started)
-** recommended minimum resouces: 2 vCPU, 4GB RAM and 20GB Disk
+  * recommended minimum resouces: 2 vCPU, 4GB RAM and 20GB Disk
 * A public IP address assigned directly to the server or via a 1:1 NAT
 * Portforwarding on these standard ports
-** 3478/TCP
-** 3478/UDP
-** 49152-65535/UDP
+  * 3478/TCP
+  * 3478/UDP
+  * 49152-65535/UDP
 
 ## :rocket: Get started
 
