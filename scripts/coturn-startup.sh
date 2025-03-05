@@ -22,16 +22,17 @@ fi
 if [ -z "$TURN_USERNAME" ]; then
   TURN_USERNAME="stunturn"
   echo "No TURN_USERNAME set. Using default 'stunturn'."
-fi    
+fi
 
 if [ -z "$TURN_PASSWORD" ]; then
   TURN_PASSWORD=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 20 ; echo ''`
   echo "No TURN_PASSWORD set. Using randomly generated one: "$TURN_PASSWORD
 fi
 
-if [ "$DEBUG" == "true" ]; then
+if [ "$DEBUG" = "true" ]; then
   LOG_LEVEL_OPTS=" -V"
   echo "Debug mode enabled."
+fi
 
 echo " "
 echo "Your STUN and TURN server is now running"
@@ -39,6 +40,7 @@ echo "STUN Server   --> stun:$EXTERNAL_IP_ADDRESS:$TURN_PORT"
 echo "TURN Server   --> turn:$EXTERNAL_IP_ADDRESS:$TURN_PORT"
 echo "TURN username --> $TURN_USERNAME"
 echo "TURN password --> $TURN_PASSWORD"
+echo " "
 
 echo "##### #### ### ## # STUN/TURN server log output # ## ### #### #####"
 
