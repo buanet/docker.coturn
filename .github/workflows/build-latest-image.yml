@@ -17,6 +17,7 @@ jobs:
         with:
           repository: 'buanet/docker.coturn'
           token: ${{ secrets.ACTIONS_PAT }}
+          ref: main
 
       - name: Generate build number
         id: generate-build-number
