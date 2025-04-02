@@ -32,6 +32,7 @@ jobs:
         run: |
           git config --global user.name 'buanet'
           git config --global user.email 'info@buanet.de'
+          git pull origin main --rebase
           git commit -am "new build"
           git push origin HEAD:main
 
