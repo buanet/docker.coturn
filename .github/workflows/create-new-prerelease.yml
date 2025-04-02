@@ -1,5 +1,5 @@
 # Github action to create a new pre-release
-name: Create new pre-release
+name: Create New Pre-Release
 
 on:
   workflow_dispatch:
