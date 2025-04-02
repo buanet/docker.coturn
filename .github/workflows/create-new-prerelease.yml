@@ -46,6 +46,8 @@ jobs:
           NEW_TAG="${{ env.RELEASE_TAG }}-beta.${NEW_BETA_VERSION}"
           echo "[LOG] New pre-release tag: $NEW_TAG"
           echo "new_tag=$NEW_TAG" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Modify Dockerfile
         run: |
@@ -61,9 +63,13 @@ jobs:
           git tag ${{ env.new_tag }}
           git push origin ${{ env.new_tag }}
           echo "[LOG] Pushed new tag: ${{ env.new_tag }}"
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Create GitHub pre-release
         run: |
           set -e
           gh release create "${{ env.new_tag }}" --prerelease --notes "This pre-release is auto-generated. It is based on the latest Docker image release ${{ env.RELEASE_TAG }} and contains Coturn ${{ env.base_image_version }}."
           echo "[LOG] GitHub pre-release created: ${{ env.new_tag }}"
+        env:
+          GH_TOKEN: ${{ github.token }}
