@@ -37,14 +37,14 @@ jobs:
       - name: Count existing pre-releases
         run: |
           set -e
-          EXISTING_BETA_VERSIONS=$(gh release list --json tagName --jq "[.[].tagName | select(startswith(\"${{ env.RELEASE_TAG }}-beta.\"))]")
-          if [ "$EXISTING_BETA_VERSIONS" == "[]" ]; then
-            NEW_BETA_VERSION=1
+          EXISTING_LATEST_VERSIONS=$(gh release list --json tagName --jq "[.[].tagName | select(startswith(\"${{ env.RELEASE_TAG }}-latest.\"))]")
+          if [ "$EXISTING_LATEST_VERSIONS" == "[]" ]; then
+            NEW_LATEST_VERSION=1
           else
-            HIGHEST_BETA=$(echo "$EXISTING_BETA_VERSIONS" | jq -r 'map(sub(".*-beta."; "")) | map(tonumber) | max')
-            NEW_BETA_VERSION=$((HIGHEST_BETA + 1))
+            HIGHEST_LATEST=$(echo "$EXISTING_LATEST_VERSIONS" | jq -r 'map(sub(".*-latest."; "")) | map(tonumber) | max')
+            NEW_LATEST_VERSION=$((HIGHEST_LATEST + 1))
           fi
-          NEW_TAG="${{ env.RELEASE_TAG }}-beta.${NEW_BETA_VERSION}"
+          NEW_TAG="${{ env.RELEASE_TAG }}-latest.${NEW_LATEST_VERSION}"
           echo "[LOG] New pre-release tag: $NEW_TAG"
           echo "new_tag=$NEW_TAG" >> $GITHUB_ENV
         env:
