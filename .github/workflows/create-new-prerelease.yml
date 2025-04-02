@@ -1,0 +1,69 @@
+# Github Action to create a new pre-release
+name: Create new pre-release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-new-pre-release:
+    name: Create and publish new pre-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch stable release tag
+        run: |
+          set -e
+          STABLERELEASE=$(curl -sL https://api.github.com/repos/buanet/docker.coturn/releases/latest | jq -r '.tag_name')
+          if [ -z "$STABLERELEASE" ]; then echo "[ERROR] Could not fetch stable release tag!" && exit 1; fi
+          echo "[LOG] Stable release tag: $STABLERELEASE"
+          echo "RELEASE_TAG=$STABLERELEASE" >> $GITHUB_ENV
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          repository: 'buanet/docker.coturn'
+          ref: ${{ env.RELEASE_TAG }}
+
+      - name: Get latest coturn release for base image
+        run: |
+          set -e
+          git fetch origin main
+          git checkout origin/main -- .github/dependencies/.latest-coturn-release
+          BASE_IMAGE_VERSION=$(cat .github/dependencies/.latest-coturn-release)
+          if [ -z "$BASE_IMAGE_VERSION" ]; then echo "[ERROR] Base image version is empty!" && exit 1; fi
+          echo "[LOG] Base image version: $BASE_IMAGE_VERSION"
+          echo "base_image_version=$BASE_IMAGE_VERSION" >> $GITHUB_ENV
+
+      - name: Count existing pre-releases
+        run: |
+          set -e
+          EXISTING_BETA_VERSIONS=$(gh release list --json tagName --jq "[.[].tagName | select(startswith(\"${{ env.RELEASE_TAG }}-beta.\"))]")
+          if [ "$EXISTING_BETA_VERSIONS" == "[]" ]; then
+            NEW_BETA_VERSION=1
+          else
+            HIGHEST_BETA=$(echo "$EXISTING_BETA_VERSIONS" | jq -r 'map(sub(".*-beta."; "")) | map(tonumber) | max')
+            NEW_BETA_VERSION=$((HIGHEST_BETA + 1))
+          fi
+          NEW_TAG="${{ env.RELEASE_TAG }}-beta.${NEW_BETA_VERSION}"
+          echo "[LOG] New pre-release tag: $NEW_TAG"
+          echo "new_tag=$NEW_TAG" >> $GITHUB_ENV
+
+      - name: Modify Dockerfile
+        run: |
+          set -e
+          sed -i "s|FROM .*$|FROM coturn/coturn:${{ env.base_image_version }}|" Dockerfile
+          echo "[LOG] Dockerfile updated successfully."
+
+      - name: Push new pre-release tag
+        run: |
+          set -e
+          git config --global user.name 'buanet'
+          git config --global user.email 'info@buanet.de'
+          git tag ${{ env.new_tag }}
+          git push origin ${{ env.new_tag }}
+          echo "[LOG] Pushed new tag: ${{ env.new_tag }}"
+
+      - name: Create GitHub pre-release
+        run: |
+          set -e
+          gh release create "${{ env.new_tag }}" --prerelease --notes "This pre-release is auto-generated. It is based on the latest Docker image release ${{ env.RELEASE_TAG }} and contains Coturn ${{ env.base_image_version }}."
+          echo "[LOG] GitHub pre-release created: ${{ env.new_tag }}"
