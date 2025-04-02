@@ -1,9 +1,9 @@
-# Github action to build image (Tag: stable)
-name: Build Image (stable)
+# Github action to build image (Tag: latest)
+name: Build Image (latest)
 
 on:
   release:
-    types: [released]
+    types: [prereleased]
   workflow_dispatch:
 
 jobs:
@@ -22,28 +22,28 @@ jobs:
         id: generate-build-number
         run: |
           BUILD="$(date +"%Y%m%d.%H%M%S")"
-          echo "$BUILD" > .github/dependencies/.stable-build
+          echo "$BUILD" > .github/dependencies/.latest-build
           echo "build_number=$BUILD" >> $GITHUB_ENV
           echo "build_number=$BUILD" >> $GITHUB_OUTPUT
           echo "[LOG] Buildnumber: $BUILD"
 
-      - name: Commit stable build version
+      - name: Commit latest build version
         run: |
           git config --global user.name 'buanet'
           git config --global user.email 'info@buanet.de'
           git commit -am "new build"
           git push origin HEAD:main
 
-  build-stable-armv7:
-    name: Build stable armv7 image
+  build-latest-armv7:
+    name: Build latest armv7 image
     needs: [create-build-number]
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch stable release tag
+      - name: Fetch latest pre-release tag
         run: |
-          STABLERELEASE="$(curl -sL https://api.github.com/repos/buanet/docker.coturn/releases/latest | jq -r '.tag_name')"
-          echo "Stable release tag : $STABLERELEASE"
-          echo "RELEASE_TAG=$STABLERELEASE" >> $GITHUB_ENV
+          LATESTPRERELEASE="$(curl -sL https://api.github.com/repos/buanet/docker.coturn/releases | jq -r '.[] | select(.prerelease) | .tag_name' | head -n 1)"
+          echo "Latest pre-release tag : $LATESTPRERELEASE"
+          echo "RELEASE_TAG=$LATESTPRERELEASE" >> $GITHUB_ENV
 
       - name: Checkout repo
         uses: actions/checkout@v4.1.7
@@ -54,7 +54,7 @@ jobs:
       - name: Set job variables
         run: |
           VERSION="$(cat .VERSION)"
-          MAJORVERSION="$(cat .VERSION | cut -c 1-2 | sed -r 's#^(.{0})#\1stable-#')"
+          MAJORVERSION="$(cat .VERSION | cut -c 1-2 | sed -r 's#^(.{0})#\1latest-#')"
           BUILD="${{ needs.create-build-number.outputs.build_number }}"
           # Log output and export as Github environment variable
           echo "[LOG] Image Version: $VERSION"
@@ -95,16 +95,16 @@ jobs:
             buanet/coturn:${{ env.version }}-build.${{ env.build }}-armv7,
             ghcr.io/buanet/coturn:${{ env.version }}-build.${{ env.build }}-armv7,
 
-  build-stable-arm64v8:
-    name: Build stable armv64v8 image
+  build-latest-arm64v8:
+    name: Build latest armv64v8 image
     needs: [create-build-number]
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch stable release tag
+      - name: Fetch latest pre-release tag
         run: |
-          STABLERELEASE="$(curl -sL https://api.github.com/repos/buanet/docker.coturn/releases/latest | jq -r '.tag_name')"
-          echo "Stable release tag : $STABLERELEASE"
-          echo "RELEASE_TAG=$STABLERELEASE" >> $GITHUB_ENV
+          LATESTPRERELEASE="$(curl -sL https://api.github.com/repos/buanet/docker.coturn/releases | jq -r '.[] | select(.prerelease) | .tag_name' | head -n 1)"
+          echo "Latest pre-release tag : $LATESTPRERELEASE"
+          echo "RELEASE_TAG=$LATESTPRERELEASE" >> $GITHUB_ENV
 
       - name: Checkout repo
         uses: actions/checkout@v4.1.7
@@ -115,7 +115,7 @@ jobs:
       - name: Set job variables
         run: |
           VERSION="$(cat .VERSION)"
-          MAJORVERSION="$(cat .VERSION | cut -c 1-2 | sed -r 's#^(.{0})#\1stable-#')"
+          MAJORVERSION="$(cat .VERSION | cut -c 1-2 | sed -r 's#^(.{0})#\1latest-#')"
           BUILD="${{ needs.create-build-number.outputs.build_number }}"
           # Log output and export as Github environment variable
           echo "[LOG] Image Version: $VERSION"
@@ -156,16 +156,16 @@ jobs:
             buanet/coturn:${{ env.version }}-build.${{ env.build }}-arm64v8,
             ghcr.io/buanet/coturn:${{ env.version }}-build.${{ env.build }}-arm64v8,
 
-  build-stable-amd64:
-    name: Build stable amd64 image
+  build-latest-amd64:
+    name: Build latest amd64 image
     needs: [create-build-number]
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch stable release tag
+      - name: Fetch latest pre-release tag
         run: |
-          STABLERELEASE="$(curl -sL https://api.github.com/repos/buanet/docker.coturn/releases/latest | jq -r '.tag_name')"
-          echo "Stable release tag : $STABLERELEASE"
-          echo "RELEASE_TAG=$STABLERELEASE" >> $GITHUB_ENV
+          LATESTPRERELEASE="$(curl -sL https://api.github.com/repos/buanet/docker.coturn/releases | jq -r '.[] | select(.prerelease) | .tag_name' | head -n 1)"
+          echo "Latest pre-release tag : $LATESTPRERELEASE"
+          echo "RELEASE_TAG=$LATESTPRERELEASE" >> $GITHUB_ENV
 
       - name: Checkout repo
         uses: actions/checkout@v4.1.7
@@ -176,7 +176,7 @@ jobs:
       - name: Set job variables
         run: |
           VERSION="$(cat .VERSION)"
-          MAJORVERSION="$(cat .VERSION | cut -c 1-2 | sed -r 's#^(.{0})#\1stable-#')"
+          MAJORVERSION="$(cat .VERSION | cut -c 1-2 | sed -r 's#^(.{0})#\1latest-#')"
           BUILD="${{ needs.create-build-number.outputs.build_number }}"
           # Log output and export as Github environment variable
           echo "[LOG] Image Version: $VERSION"
@@ -216,13 +216,13 @@ jobs:
 
   create-multiarch-image:
     runs-on: ubuntu-latest
-    needs: [build-stable-armv7, build-stable-arm64v8, build-stable-amd64, create-build-number]
+    needs: [build-latest-armv7, build-latest-arm64v8, build-latest-amd64, create-build-number]
     steps:
-      - name: Fetch stable release tag
+      - name: Fetch latest pre-release tag
         run: |
-          STABLERELEASE="$(curl -sL https://api.github.com/repos/buanet/docker.coturn/releases/latest | jq -r '.tag_name')"
-          echo "Stable release tag : $STABLERELEASE"
-          echo "RELEASE_TAG=$STABLERELEASE" >> $GITHUB_ENV
+          LATESTPRERELEASE="$(curl -sL https://api.github.com/repos/buanet/docker.coturn/releases | jq -r '.[] | select(.prerelease) | .tag_name' | head -n 1)"
+          echo "Latest pre-release tag : $LATESTPRERELEASE"
+          echo "RELEASE_TAG=$LATESTPRERELEASE" >> $GITHUB_ENV
 
       - name: Checkout repo
         uses: actions/checkout@v4.1.7
@@ -233,7 +233,7 @@ jobs:
       - name: Set job variables
         run: |
           VERSION="$(cat .VERSION)"
-          MAJORVERSION="$(cat .VERSION | cut -c 1-2 | sed -r 's#^(.{0})#\1stable-#')"
+          MAJORVERSION="$(cat .VERSION | cut -c 1-2 | sed -r 's#^(.{0})#\1latest-#')"
           BUILD="${{ needs.create-build-number.outputs.build_number }}"
           # Log output and export as Github environment variable
           echo "[LOG] Image Version: $VERSION"
@@ -258,8 +258,8 @@ jobs:
 
       - name: Create and push multi-platform image
         run: |
-          docker buildx imagetools create -t buanet/coturn:stable buanet/coturn:${{ env.version }}-build.${{ env.build }}-armv7 buanet/coturn:${{ env.version }}-build.${{ env.build }}-arm64v8 buanet/coturn:${{ env.version }}-build.${{ env.build }}-amd64
-          docker buildx imagetools create -t ghcr.io/buanet/coturn:stable ghcr.io/buanet/coturn:${{ env.version }}-build.${{ env.build }}-armv7 ghcr.io/buanet/coturn:${{ env.version }}-build.${{ env.build }}-arm64v8 ghcr.io/buanet/coturn:${{ env.version }}-build.${{ env.build }}-amd64
+          docker buildx imagetools create -t buanet/coturn:latest buanet/coturn:${{ env.version }}-build.${{ env.build }}-armv7 buanet/coturn:${{ env.version }}-build.${{ env.build }}-arm64v8 buanet/coturn:${{ env.version }}-build.${{ env.build }}-amd64
+          docker buildx imagetools create -t ghcr.io/buanet/coturn:latest ghcr.io/buanet/coturn:${{ env.version }}-build.${{ env.build }}-armv7 ghcr.io/buanet/coturn:${{ env.version }}-build.${{ env.build }}-arm64v8 ghcr.io/buanet/coturn:${{ env.version }}-build.${{ env.build }}-amd64
           docker buildx imagetools create -t buanet/coturn:${{ env.majorversion }} buanet/coturn:${{ env.version }}-build.${{ env.build }}-armv7 buanet/coturn:${{ env.version }}-build.${{ env.build }}-arm64v8 buanet/coturn:${{ env.version }}-build.${{ env.build }}-amd64
           docker buildx imagetools create -t ghcr.io/buanet/coturn:${{ env.majorversion }} ghcr.io/buanet/coturn:${{ env.version }}-build.${{ env.build }}-armv7 ghcr.io/buanet/coturn:${{ env.version }}-build.${{ env.build }}-arm64v8 ghcr.io/buanet/coturn:${{ env.version }}-build.${{ env.build }}-amd64
           docker buildx imagetools create -t buanet/coturn:${{ env.version }} buanet/coturn:${{ env.version }}-build.${{ env.build }}-armv7 buanet/coturn:${{ env.version }}-build.${{ env.build }}-arm64v8 buanet/coturn:${{ env.version }}-build.${{ env.build }}-amd64

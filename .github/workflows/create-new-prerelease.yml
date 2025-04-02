@@ -1,4 +1,4 @@
-# Github Action to create a new pre-release
+# Github action to create a new pre-release
 name: Create new pre-release
 
 on:
@@ -68,7 +68,7 @@ jobs:
       - name: Create GitHub pre-release
         run: |
           set -e
-          gh release create "${{ env.new_tag }}" --prerelease --notes "This pre-release is auto-generated. It is based on the latest Docker image release ${{ env.RELEASE_TAG }} and contains Coturn ${{ env.base_image_version }}."
+          gh release create "${{ env.new_tag }}" --prerelease --notes "This pre-release is auto-generated.<\br>It is based on the latest Docker image release ${{ env.RELEASE_TAG }} and contains Coturn ${{ env.base_image_version }}."
           echo "[LOG] GitHub pre-release created: ${{ env.new_tag }}"
         env:
           GH_TOKEN: ${{ secrets.ACTIONS_PAT }}
