@@ -69,12 +69,10 @@ jobs:
         run: |
           set -e
           # Write release notes to a temporary file
-          echo "### Pre-Release Notes" > release-notes.md
+          echo "This pre-release was **automatically generated** and includes the latest updates:" > release-notes.md
           echo "" >> release-notes.md
-          echo "This pre-release was **automatically generated** and includes the latest updates:" >> release-notes.md
-          echo "" >> release-notes.md
-          echo "- **Base Release:** `${{ env.RELEASE_TAG }}`" >> release-notes.md
-          echo "- **Coturn Version:** `${{ env.base_image_version }}`" >> release-notes.md
+          echo "- **Base Release:** ${{ env.RELEASE_TAG }}" >> release-notes.md
+          echo "- **Coturn Version:** ${{ env.base_image_version }}" >> release-notes.md
           echo "" >> release-notes.md
           echo "This release is used to generate the **Docker image tagged as \`latest\`**." >> release-notes.md
           echo "The base image is automatically updated to the most recent Coturn version, ensuring the inclusion of the latest features and security fixes." >> release-notes.md
@@ -83,8 +81,6 @@ jobs:
           echo "" >> release-notes.md
           echo "> **Note:** This is a **pre-release version** and may contain experimental changes." >> release-notes.md
           echo "> It is **not recommended for production use** without thorough testing." >> release-notes.md
-          echo "" >> release-notes.md
-          echo "**More information about available tags can be found on the [Docker Hub page](https://hub.docker.com/r/buanet/docker.coturn/tags).**" >> release-notes.md
 
           # Create the GitHub pre-release
           gh release create "${{ env.new_tag }}" --prerelease --notes-file release-notes.md
